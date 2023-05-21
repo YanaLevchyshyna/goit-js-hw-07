@@ -2,11 +2,10 @@ import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
 const galleryList = document.querySelector('.gallery');
-
 const galleryMarkup = createGalleryItems(galleryItems);
 galleryList.insertAdjacentHTML('beforeend', galleryMarkup);
 
-galleryList.addEventListener('click', onGalleryItemClick);
+galleryList.addEventListener('click', onOpenModal);
 
 function createGalleryItems(galleryItems) {
   return galleryItems
@@ -25,23 +24,26 @@ function createGalleryItems(galleryItems) {
     .join('');
 }
 
-function onGalleryItemClick(e) {
+function onOpenModal(e) {
   e.preventDefault();
+  if (e.target.nodeName !== 'IMG') {
+    return;
+  }
+  const instance = basicLightbox.create(
+    `<img src="${e.target.dataset.source}">`,
+    {
+      handler: null,
+      onShow(instance) {
+        this.handler = closeModal.bind(instance);
 
-  const galleryItem = e.target.dataset.source;
+        document.addEventListener('keydown', this.handler);
+      },
 
-  const instance = basicLightbox.create(`<img src="${galleryItem}">`, {
-    handler: null,
-    onShow(instance) {
-      this.handler = closeModal.bind(instance);
-      console.log(this);
-      document.addEventListener('keydown', this.handler);
-    },
-
-    onClose() {
-      document.removeEventListener('keydown', this.handler);
-    },
-  });
+      onClose() {
+        document.removeEventListener('keydown', this.handler);
+      },
+    }
+  );
   instance.show();
 }
 
