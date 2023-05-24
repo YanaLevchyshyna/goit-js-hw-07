@@ -6,8 +6,6 @@ const galleryList = document.querySelector('.gallery');
 const galleryMarkup = createGalleryItems(galleryItems);
 galleryList.insertAdjacentHTML('beforeend', galleryMarkup);
 
-galleryList.addEventListener('click', onPeventGalleryItemDefaultClick);
-
 function createGalleryItems(galleryItems) {
   return galleryItems
     .map(({ preview, original, description }) => {
@@ -27,7 +25,3 @@ let gallery = new SimpleLightbox('.gallery a', {
 });
 
 console.log(gallery);
-
-function onPeventGalleryItemDefaultClick(e) {
-  e.preventDefault();
-}
